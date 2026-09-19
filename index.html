@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>鑫源数码回收 · 手机参考报价</title>
+<script src="https://registry.npmmirror.com/lucide/1.28.0/files/dist/umd/lucide.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f8;color:#1f2333;line-height:1.5;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+.hidden{display:none!important}
+button{font-family:inherit}
+:focus-visible{outline:2px solid #3949ab;outline-offset:2px}
+
+/* ===== 顶部 ===== */
+.hero{background:linear-gradient(135deg,#1a237e 0%,#283593 55%,#3949ab 100%);color:#fff;padding:30px 20px 34px;position:relative;overflow:hidden}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.hero::before{width:240px;height:240px;right:-70px;top:-80px}
+.hero::after{width:160px;height:160px;left:-50px;bottom:-70px}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.shop-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:4px 12px;border-radius:999px;font-size:12px;letter-spacing:1px}
+.shop-badge svg{width:14px;height:14px}
+.hero h1{font-size:27px;font-weight:800;margin-top:14px;letter-spacing:1px}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.78);margin-top:6px}
+.date-pill{display:inline-block;margin-top:12px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);padding:4px 12px;border-radius:8px;font-size:12px;color:rgba(255,255,255,.92)}
+
+/* ===== 步骤条 ===== */
+.steps{max-width:720px;margin:14px auto 0;padding:0 16px;display:flex;align-items:center}
+.step{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#9aa0b5;cursor:pointer;min-width:54px;user-select:none;-webkit-user-select:none;transition:color .25s}
+.step .dot{width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid #d7dae6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#9aa0b5;transition:all .3s}
+.step.current{color:#1a237e;font-weight:700}
+.step.current .dot{background:#1a237e;border-color:#1a237e;color:#fff;box-shadow:0 0 0 4px rgba(26,35,126,.12)}
+.step.done{color:#3949ab}
+.step.done .dot{background:#3949ab;border-color:#3949ab;color:#fff}
+.step-line{flex:1;height:2px;background:#d7dae6;margin:0 6px;min-width:14px;border-radius:2px;transition:background .3s}
+.step-line.done{background:#3949ab}
+
+/* ===== 容器 ===== */
+.container{max-width:720px;margin:0 auto;padding:14px 16px 36px}
+.card{background:#fff;border-radius:16px;padding:20px 18px;box-shadow:0 1px 3px rgba(20,30,80,.06)}
+.sec-title{font-size:16px;font-weight:700;color:#1a237e;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.step-tag{font-size:11px;font-weight:700;color:#fff;background:#1a237e;padding:3px 8px;border-radius:6px;letter-spacing:1px}
+
+/* ===== 品牌 ===== */
+.brand-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.brand-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;background:#f7f8fc;border:2px solid transparent;border-radius:14px;cursor:pointer;transition:all .25s;font-family:inherit}
+.brand-card:hover{border-color:#c5cbe8;transform:translateY(-2px)}
+.brand-card:active{transform:scale(.98)}
+.brand-card.active{border-color:#1a237e;background:#eef0fb}
+.brand-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
+.brand-name{font-size:14px;font-weight:700;color:#1f2333}
+.brand-cnt{font-size:11px;color:#9aa0b5}
+
+/* ===== 型号 ===== */
+.model-list{display:flex;flex-direction:column;gap:8px;max-height:54vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:2px}
+.model-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px;background:#f7f8fc;border:2px solid transparent;border-radius:12px;cursor:pointer;transition:all .2s;font-family:inherit}
+.model-item:hover{border-color:#c5cbe8}
+.model-item:active{transform:scale(.99)}
+.model-item.active{border-color:#1a237e;background:#eef0fb}
+.model-name{font-size:14px;font-weight:600;color:#1f2333}
+.model-price{font-size:12px;color:#c2410c;font-weight:700;background:#fff4e5;padding:3px 9px;border-radius:999px;white-space:nowrap}
+
+/* ===== 存储 ===== */
+.chip-grid{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:12px 24px;border-radius:999px;background:#f7f8fc;border:2px solid transparent;font-size:15px;font-weight:600;color:#1f2333;cursor:pointer;transition:all .2s;font-family:inherit}
+.chip:hover{border-color:#c5cbe8}
+.chip.active{border-color:#1a237e;background:#1a237e;color:#fff}
+
+/* ===== 成色 ===== */
+.grade-list{display:flex;flex-direction:column;gap:8px}
+.grade-item{display:flex;align-items:center;gap:10px;padding:12px;background:#f7f8fc;border:2px solid transparent;border-radius:12px;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit}
+.grade-item:hover{border-color:#c5cbe8}
+.grade-item.active{border-color:#1a237e;background:#eef0fb}
+.grade-badge{width:34px;height:34px;border-radius:10px;background:#fff;border:1px solid #d7dae6;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#1a237e;flex-shrink:0;transition:all .2s}
+.grade-item.active .grade-badge{background:#1a237e;color:#fff;border-color:#1a237e}
+.grade-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.grade-name{font-size:14px;font-weight:700;color:#1f2333}
+.grade-desc{font-size:11px;color:#8a90a8}
+.grade-side{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.grade-rate{font-size:11px;color:#1a237e;background:#e3e6f7;padding:2px 8px;border-radius:999px;font-weight:700}
+.grade-price{font-size:15px;font-weight:800;color:#c2410c}
+
+/* ===== 结果 ===== */
+.result-card{background:linear-gradient(135deg,#1a237e,#3949ab);border-radius:18px;padding:28px 20px;text-align:center;color:#fff;box-shadow:0 10px 26px rgba(26,35,126,.28)}
+.result-head{font-size:13px;letter-spacing:4px;color:rgba(255,255,255,.75)}
+.result-price{font-size:54px;font-weight:800;color:#ffc107;margin:12px 0 4px;letter-spacing:1px;font-variant-numeric:tabular-nums;line-height:1.1}
+.result-desc{font-size:13px;color:rgba(255,255,255,.94);background:rgba(255,255,255,.13);display:inline-block;padding:6px 14px;border-radius:999px;margin-top:10px}
+.result-note{font-size:12px;color:rgba(255,255,255,.62);margin-top:14px}
+.result-actions{display:flex;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+#btnRestart{background:#ffc107;color:#1a237e;border:none;border-radius:999px;padding:12px 30px;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s}
+#btnRestart:active{transform:scale(.97)}
+.result-link{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
+.result-link:active{transform:scale(.97)}
+
+/* ===== 底部 ===== */
+.footer{max-width:720px;margin:0 auto;padding:4px 20px 40px;text-align:center}
+.contact{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 1px 3px rgba(20,30,80,.05)}
+.contact-item{display:flex;align-items:center;gap:7px;font-size:13px;color:#5a5f75}
+.contact-item svg{width:16px;height:16px;color:#1a237e;flex-shrink:0}
+.contact-item b{color:#1f2333}
+.foot-note{font-size:11px;color:#9aa0b5;margin-top:14px}
+.foot-copy{font-size:11px;color:#b6bacd;margin-top:6px}
+
+/* ===== 齿轮（长按3秒进后台） ===== */
+#gearWrap{position:fixed;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:60;width:54px;height:54px;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
+#gearBtn{width:46px;height:46px;border-radius:50%;background:rgba(26,35,126,.88);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(26,35,126,.32);transition:transform .2s,background .2s;backdrop-filter:blur(4px);touch-action:none}
+#gearBtn svg{width:22px;height:22px}
+#gearWrap.holding #gearBtn{transform:scale(1.12);background:#1a237e}
+#gearRing{position:absolute;inset:-4px;width:62px;height:62px;transform:rotate(-90deg);pointer-events:none}
+#gearRing circle{fill:none;stroke:#ffc107;stroke-width:3.5;stroke-linecap:round}
+#gearTip{position:absolute;right:62px;top:50%;transform:translateY(-50%);background:rgba(25,30,50,.92);color:#fff;font-size:11px;padding:6px 11px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none}
+#gearWrap.holding #gearTip{opacity:1}
+
+/* ===== 弹窗 ===== */
+.mask{position:fixed;inset:0;background:rgba(15,20,45,.55);backdrop-filter:blur(4px);z-index:80;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{background:#fff;border-radius:18px;padding:26px 22px;width:100%;max-width:320px;text-align:center;animation:popIn .3s ease}
+.modal h3{font-size:18px;color:#1f2333}
+.modal-sub{font-size:13px;color:#8a90a8;margin:6px 0 16px}
+#pwInput{width:100%;text-align:center;font-size:26px;letter-spacing:10px;padding:12px 0;border:2px solid #d7dae6;border-radius:12px;outline:none;font-weight:700;color:#1f2333}
+#pwInput:focus{border-color:#1a237e}
+.pw-err{color:#c62f1f;font-size:12px;margin-top:8px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions button{flex:1;padding:11px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+#pwOk{background:#1a237e;color:#fff;border:none}
+#pwCancel{background:#f1f2f7;color:#5a5f75;border:none}
+
+/* ===== 后台 ===== */
+.admin{position:fixed;inset:0;background:#f0f2f8;z-index:90;display:flex;flex-direction:column}
+.admin-head{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.admin-head h2{font-size:17px;font-weight:800}
+#adminClose{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.16);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#adminClose svg{width:18px;height:18px}
+.admin-tabs{display:flex;background:#fff;border-bottom:1px solid #e6e8f2;position:sticky;top:0;z-index:2}
+.atab{flex:1;padding:13px 0;font-size:14px;font-weight:600;color:#8a90a8;background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
+.atab.active{color:#1a237e;border-bottom-color:#1a237e}
+.admin-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;max-width:760px;width:100%;margin:0 auto}
+
+.abrands{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;margin-bottom:14px}
+.abrand{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid #e3e5f0;font-size:13px;font-weight:700;color:#5a5f75;cursor:pointer;transition:all .2s;font-family:inherit}
+.abrand.active{background:#1a237e;border-color:#1a237e;color:#fff}
+.ab-logo{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#3949ab,#1a237e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.abrand.active .ab-logo{background:rgba(255,255,255,.22)}
+.ab-cnt{font-size:10px;background:rgba(26,35,126,.08);color:#3949ab;border-radius:999px;padding:1px 6px;font-weight:700}
+.abrand.active .ab-cnt{background:rgba(255,255,255,.22);color:#fff}
+
+.amodel{background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.amodel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.amodel-name{font-size:14px;font-weight:700;color:#1f2333}
+.adel{background:#fdecec;color:#c62f1f;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.amodel-prices{display:flex;flex-wrap:wrap;gap:8px}
+.pcell{display:flex;flex-direction:column;align-items:center;gap:4px;background:#f4f5fa;border-radius:10px;padding:7px 9px}
+.pcell span{font-size:11px;color:#5a5f75;font-weight:700}
+.price-inp{width:66px;border:1.5px solid #d7dae6;border-radius:7px;padding:6px;font-size:16px;font-weight:700;text-align:center;outline:none;font-family:inherit;background:#fff;color:#1f2333}
+.price-inp:focus{border-color:#1a237e}
+
+.admin-card{background:#fff;border-radius:14px;padding:18px 16px;margin-top:14px}
+.admin-card h4{font-size:14px;color:#1f2333;margin-bottom:12px}
+.admin-card input[type=text],.admin-card input:not([type]){width:100%;border:1.5px solid #d7dae6;border-radius:10px;padding:12px;font-size:16px;margin-bottom:10px;outline:none;font-family:inherit;background:#fff;color:#1f2333}
+.admin-card input:focus{border-color:#1a237e}
+.admin-card label{display:block;font-size:12px;font-weight:700;color:#5a5f75;margin:10px 0 5px}
+.admin-card label:first-of-type{margin-top:0}
+
+.b-pri{background:#1a237e;color:#fff;border:none;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.b-pri:active{transform:scale(.98)}
+.b-sec{background:#fff;color:#1a237e;border:1.5px solid #1a237e;border-radius:12px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.b-sec:active{transform:scale(.98)}
+.b-danger{background:#fdecec;color:#c62f1f;border:1.5px solid #e8b4b4;border-radius:12px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.b-danger:active{transform:scale(.98)}
+.w100{width:100%}
+.data-actions{display:flex;flex-direction:column;gap:12px}
+.data-actions .b-pri,.data-actions .b-sec,.data-actions .b-danger{display:flex;align-items:center;justify-content:center;gap:8px}
+.data-actions svg{width:16px;height:16px}
+.data-note{font-size:12px;color:#9aa0b5;text-align:center;margin-top:14px}
+.add-tip{font-size:11px;color:#8a90a8;margin-bottom:10px}
+
+/* ===== Toast ===== */
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:rgba(25,30,50,.93);color:#fff;font-size:13px;padding:10px 22px;border-radius:999px;opacity:0;pointer-events:none;transition:all .3s;z-index:120;white-space:nowrap;max-width:86vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 动画 ===== */
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.anim{animation:slideUp .35s cubic-bezier(.22,.61,.36,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes pricePop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.price-pop{animation:pricePop .5s cubic-bezier(.22,.61,.36,1) both}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="shop-badge"><i data-lucide="smartphone"></i>手机回收</span>
+    <h1 id="shopName">鑫源数码回收</h1>
+    <p class="hero-sub">今日回收参考报价 · 每日更新</p>
+    <span class="date-pill" id="today"></span>
+  </div>
+</header>
+
+<nav class="steps">
+  <div class="step" data-step="1"><span class="dot">1</span><span>品牌</span></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="2"><span class="dot">2</span><span>型号</span></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="3"><span class="dot">3</span><span>存储</span></div>
+  <div class="step-line"></div>
+  <div class="step" data-step="4"><span class="dot">4</span><span>成色</span></div>
+</nav>
+
+<main class="container">
+  <section id="sec-brand" class="card step-card">
+    <h2 class="sec-title"><span class="step-tag">第1步</span>选择手机品牌</h2>
+    <div id="brandGrid" class="brand-grid"></div>
+  </section>
+
+  <section id="sec-model" class="card step-card hidden">
+    <h2 class="sec-title"><span class="step-tag">第2步</span>选择型号</h2>
+    <div id="modelList" class="model-list"></div>
+  </section>
+
+  <section id="sec-storage" class="card step-card hidden">
+    <h2 class="sec-title"><span class="step-tag">第3步</span>选择存储容量</h2>
+    <div id="storageChips" class="chip-grid"></div>
+  </section>
+
+  <section id="sec-grade" class="card step-card hidden">
+    <h2 class="sec-title"><span class="step-tag">第4步</span>选择成色等级</h2>
+    <div id="gradeList" class="grade-list"></div>
+  </section>
+
+  <section id="sec-result" class="result-card step-card hidden">
+    <div class="result-head">参 考 报 价</div>
+    <div id="resultPrice" class="result-price price-pop">¥0</div>
+    <div id="resultDesc" class="result-desc"></div>
+    <div class="result-note">价格每日更新，以门店当面检测为准</div>
+    <div class="result-actions">
+      <button id="btnBackGrade" class="result-link">调整成色</button>
+      <button id="btnRestart" class="">重新查询</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="contact">
+    <div class="contact-item"><i data-lucide="message-circle"></i><span>微信号：<b id="footWechat">待更新</b></span></div>
+    <div class="contact-item"><i data-lucide="phone"></i><span>电话：<b id="footPhone">待更新</b></span></div>
+  </div>
+  <p class="foot-note">* 以上价格仅供参考，实际回收价以门店当面检测为准</p>
+  <p class="foot-copy">手机回收报价查询 · 每日更新</p>
+</footer>
+
+<div id="gearWrap">
+  <svg id="gearRing" viewBox="0 0 62 62"><circle cx="31" cy="31" r="25.5"/></svg>
+  <button id="gearBtn" aria-label="更多"><i data-lucide="settings"></i></button>
+  <div id="gearTip">长按进入管理</div>
+</div>
+
+<div id="pwMask" class="mask hidden">
+  <div class="modal">
+    <h3>后台管理</h3>
+    <p class="modal-sub">请输入管理密码</p>
+    <input id="pwInput" type="password" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="off">
+    <p id="pwErr" class="pw-err hidden">密码错误，请重试</p>
+    <div class="modal-actions">
+      <button id="pwCancel">取消</button>
+      <button id="pwOk">确认</button>
+    </div>
+  </div>
+</div>
+
+<div id="adminMask" class="admin hidden">
+  <div class="admin-head">
+    <h2>后台管理</h2>
+    <button id="adminClose" aria-label="关闭"><i data-lucide="x"></i></button>
+  </div>
+  <div class="admin-tabs">
+    <button class="atab active" data-tab="models">机型管理</button>
+    <button class="atab" data-tab="shop">店铺设置</button>
+    <button class="atab" data-tab="data">数据管理</button>
+  </div>
+  <div class="admin-body">
+    <div id="tab-models">
+      <div id="abrands" class="abrands"></div>
+      <div id="amodels"></div>
+      <div class="admin-card">
+        <h4>添加新机型</h4>
+        <p class="add-tip" id="addTip"></p>
+        <input id="addName" type="text" placeholder="型号名称，如 iPhone 17">
+        <input id="addStorage" type="text" placeholder="存储容量，逗号分隔，如 128G,256G">
+        <input id="addPrice" type="text" placeholder="靓机参考价，与存储对应，如 3500,3900">
+        <button id="addBtn" class="b-pri w100">添加机型</button>
+      </div>
+    </div>
+    <div id="tab-shop" class="hidden">
+      <div class="admin-card">
+        <h4>店铺信息</h4>
+        <label>店铺名称</label>
+        <input id="setName" type="text">
+        <label>微信号</label>
+        <input id="setWechat" type="text">
+        <label>联系电话</label>
+        <input id="setPhone" type="text">
+        <button id="saveShop" class="b-pri w100">保存设置</button>
+      </div>
+    </div>
+    <div id="tab-data" class="hidden">
+      <div class="admin-card">
+        <h4>数据备份与恢复</h4>
+        <div class="data-actions">
+          <button id="btnExport" class="b-pri"><i data-lucide="download"></i>导出数据 (JSON)</button>
+          <button id="btnImport" class="b-sec"><i data-lucide="upload"></i>导入数据 (JSON)</button>
+          <button id="btnReset" class="b-danger"><i data-lucide="rotate-ccw"></i>重置为默认数据</button>
+        </div>
+        <p class="data-note">数据保存在本机浏览器中，更换设备或清除浏览器数据会丢失，建议定期导出备份。</p>
+      </div>
+      <input id="importFile" type="file" accept=".json,application/json" class="hidden">
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const DEFAULT_DATA = {"shop": {"name": "鑫源数码回收", "wechat": "zsy452452", "phone": "13310992703"}, "brands": [{"id": "apple", "name": "苹果 Apple", "logo": "A", "models": [{"m": "iPhone 16 Pro Max", "s": "256G/512G/1T", "p": "7870/8500/9200"}, {"m": "iPhone 16 Pro", "s": "128G/256G/512G/1T", "p": "6200/6890/7500/8200"}, {"m": "iPhone 16", "s": "128G/256G/512G", "p": "4500/4800/5300"}, {"m": "iPhone 15 Pro Max", "s": "256G/512G/1T", "p": "4360/4800/5200"}, {"m": "iPhone 15 Pro", "s": "128G/256G/512G/1T", "p": "3600/3970/4400/4800"}, {"m": "iPhone 15", "s": "128G/256G/512G", "p": "2600/2810/3100"}, {"m": "iPhone 14 Pro Max", "s": "128G/256G/512G/1T", "p": "2900/3150/3400/3600"}, {"m": "iPhone 14 Pro", "s": "128G/256G/512G/1T", "p": "2600/2890/3100/3300"}, {"m": "iPhone 14", "s": "128G/256G/512G", "p": "1500/1710/1900"}, {"m": "iPhone 13 Pro Max", "s": "128G/256G/512G/1T", "p": "2100/2330/2500/2700"}, {"m": "iPhone 13 Pro", "s": "128G/256G/512G/1T", "p": "1850/2080/2300/2500"}, {"m": "iPhone 13", "s": "128G/256G/512G", "p": "1100/1260/1400"}, {"m": "iPhone 12 Pro Max", "s": "128G/256G/512G", "p": "1500/1690/1800"}, {"m": "iPhone 12 Pro", "s": "128G/256G/512G", "p": "1150/1330/1500"}, {"m": "iPhone 12", "s": "64G/128G/256G", "p": "750/870/950"}, {"m": "iPhone 11 Pro Max", "s": "64G/256G/512G", "p": "900/1030/1100"}, {"m": "iPhone 11 Pro", "s": "64G/256G/512G", "p": "800/900/950"}, {"m": "iPhone 11", "s": "64G/128G/256G", "p": "680/790/850"}, {"m": "iPhone XS Max", "s": "64G/256G/512G", "p": "900/1130/1200"}, {"m": "iPhone XR", "s": "64G/128G/256G", "p": "550/660/720"}, {"m": "iPhone X", "s": "64G/256G", "p": "450/560"}, {"m": "iPhone 8 Plus", "s": "64G/128G/256G", "p": "400/490/530"}]}, {"id": "xiaomi", "name": "小米 Xiaomi", "logo": "X", "models": [{"m": "小米17 Pro Max", "s": "256G/512G/1T", "p": "4490/4800/5200"}, {"m": "小米17 Pro", "s": "256G/512G/1T", "p": "3300/3600/3900"}, {"m": "小米17 Ultra", "s": "256G/512G/1T", "p": "4000/4340/4700"}, {"m": "小米17", "s": "256G/512G", "p": "2700/2980"}, {"m": "小米15 Ultra", "s": "256G/512G/1T", "p": "2800/3160/3500"}, {"m": "小米15 Pro", "s": "256G/512G", "p": "1950/2150"}, {"m": "小米15S Pro", "s": "256G/512G", "p": "2150/2380"}, {"m": "小米15", "s": "256G/512G", "p": "1900/2100"}, {"m": "小米14 Ultra", "s": "256G/512G/1T", "p": "2050/2270/2500"}, {"m": "小米14 Pro", "s": "256G/512G", "p": "1250/1400"}, {"m": "小米14", "s": "256G/512G", "p": "1100/1240"}, {"m": "小米13 Ultra", "s": "256G/512G", "p": "1350/1500"}, {"m": "小米13", "s": "128G/256G", "p": "850/970"}, {"m": "小米11 Ultra", "s": "256G/512G", "p": "800/900"}, {"m": "小米11", "s": "128G/256G", "p": "350/410"}, {"m": "小米10 (5G版)", "s": "128G/256G", "p": "220/280"}, {"m": "MIX Fold 4", "s": "256G/512G", "p": "3200/3600"}, {"m": "MIX Fold 3", "s": "256G/512G", "p": "2800/3080"}, {"m": "MIX Fold 2 (5G版)", "s": "256G/512G", "p": "1600/1740"}, {"m": "MIX Fold", "s": "256G/512G", "p": "450/570"}]}, {"id": "redmi", "name": "Redmi 红米", "logo": "R", "models": [{"m": "REDMI K90 Pro Max", "s": "256G/512G", "p": "2500/2780"}, {"m": "REDMI K90", "s": "256G/512G", "p": "1950/2190"}, {"m": "REDMI K80 Pro", "s": "256G/512G", "p": "1650/1845"}, {"m": "REDMI K80 (至尊版)", "s": "256G/512G", "p": "1500/1660"}, {"m": "REDMI K80", "s": "256G/512G", "p": "1450/1640"}, {"m": "Redmi K70 (至尊版)", "s": "256G/512G", "p": "1350/1510"}, {"m": "Redmi K70", "s": "256G/512G", "p": "950/1100"}, {"m": "Redmi K60 (至尊版)", "s": "256G/512G", "p": "900/1010"}, {"m": "Redmi K60", "s": "256G/512G", "p": "780/890"}, {"m": "Redmi K50 (5G 至尊版)", "s": "256G/512G", "p": "500/600"}, {"m": "Redmi K50", "s": "128G/256G", "p": "420/520"}, {"m": "Redmi K40", "s": "128G/256G", "p": "300/380"}, {"m": "REDMI Turbo 4 Pro", "s": "256G/512G", "p": "1250/1450"}, {"m": "REDMI Turbo 4", "s": "256G/512G", "p": "900/1060"}, {"m": "Redmi Note 14 Pro+", "s": "256G/512G", "p": "750/880"}, {"m": "Redmi Note 14 (5G版)", "s": "128G/256G", "p": "530/640"}, {"m": "Redmi Note 13 Pro+", "s": "256G/512G", "p": "680/800"}, {"m": "Redmi Note 13 Pro", "s": "128G/256G", "p": "520/640"}, {"m": "Redmi Note 12 Turbo", "s": "128G/256G", "p": "500/620"}, {"m": "Redmi Note 11T Pro", "s": "128G/256G", "p": "440/540"}]}, {"id": "huawei", "name": "华为 Huawei", "logo": "H", "models": [{"m": "Mate 60 Pro+", "s": "256G/512G", "p": "2000/2250"}, {"m": "Mate 60 Pro", "s": "256G/512G", "p": "1350/1505"}, {"m": "Mate 60", "s": "256G/512G", "p": "1550/1740"}, {"m": "Mate 50 Pro", "s": "256G/512G", "p": "850/970"}, {"m": "Mate 50", "s": "256G/512G", "p": "820/930"}, {"m": "Mate 40E Pro (5G版)", "s": "256G", "p": "900"}, {"m": "Mate 40 Pro", "s": "256G", "p": "900"}, {"m": "Mate 30 Pro (5G版)", "s": "128G/256G", "p": "530/610"}, {"m": "Mate 30 (5G版)", "s": "128G/256G", "p": "450/520"}, {"m": "P60", "s": "256G/512G", "p": "720/835"}, {"m": "P50 Pro", "s": "256G/512G", "p": "750/870"}, {"m": "P40 Pro", "s": "128G/256G", "p": "650/760"}, {"m": "P40 (5G版)", "s": "128G/256G", "p": "380/450"}, {"m": "P30 Pro", "s": "128G/256G", "p": "350/430"}, {"m": "P30", "s": "64G/128G", "p": "100/130"}, {"m": "nova 14 Ultra", "s": "256G/512G", "p": "1250/1410"}, {"m": "nova 14 Pro", "s": "256G/512G", "p": "950/1080"}, {"m": "nova 14", "s": "256G/512G", "p": "850/980"}, {"m": "nova 13 Pro", "s": "256G/512G", "p": "940/1070"}, {"m": "nova 13", "s": "256G/512G", "p": "990/1140"}]}, {"id": "samsung", "name": "三星 Samsung", "logo": "S", "models": [{"m": "Galaxy S24 Ultra", "s": "256G/512G", "p": "5500/6200"}, {"m": "Galaxy S24+", "s": "256G/512G", "p": "4200/4800"}, {"m": "Galaxy S24", "s": "128G/256G", "p": "3200/3600"}, {"m": "Galaxy S23 Ultra", "s": "256G/512G", "p": "4000/4500"}, {"m": "Galaxy S23", "s": "128G/256G", "p": "2500/2800"}, {"m": "Galaxy Z Fold6", "s": "256G/512G", "p": "4200/4800"}, {"m": "Galaxy Z Flip6", "s": "256G/512G", "p": "3500/4000"}, {"m": "Galaxy Z Fold5", "s": "256G/512G", "p": "3200/3600"}, {"m": "Galaxy Z Flip5", "s": "256G/512G", "p": "2500/2800"}]}, {"id": "oppo", "name": "OPPO", "logo": "O", "models": [{"m": "Find X8 Pro", "s": "256G/512G", "p": "3200/3600"}, {"m": "Find X8", "s": "256G/512G", "p": "2600/2900"}, {"m": "Find X7 Ultra", "s": "256G/512G", "p": "2800/3100"}, {"m": "Find X7", "s": "256G/512G", "p": "2200/2500"}, {"m": "Reno13 Pro", "s": "256G/512G", "p": "1800/2100"}, {"m": "Reno13", "s": "256G/512G", "p": "1400/1600"}, {"m": "Reno12 Pro", "s": "256G/512G", "p": "1200/1400"}]}, {"id": "vivo", "name": "vivo", "logo": "V", "models": [{"m": "X200 Pro", "s": "256G/512G", "p": "3200/3600"}, {"m": "X200", "s": "256G/512G", "p": "2600/2900"}, {"m": "X100 Ultra", "s": "256G/512G", "p": "3000/3400"}, {"m": "X100 Pro", "s": "256G/512G", "p": "2400/2700"}, {"m": "X100", "s": "256G/512G", "p": "2000/2300"}, {"m": "S20 Pro", "s": "256G/512G", "p": "1600/1800"}, {"m": "S19 Pro", "s": "256G/512G", "p": "1200/1400"}]}]};
+const STORAGE_KEY = 'phone_recycle_data_v2';
+const ADMIN_PWD = '888888';
+const HOLD_MS = 3000;
+const GRADES = [
+  {id:'A',name:'靓机',desc:'无磕碰划痕，屏幕完好，功能正常',rate:1},
+  {id:'B',name:'小花',desc:'轻微使用痕迹，细小划痕',rate:0.9},
+  {id:'C',name:'屏幕中框花',desc:'屏幕有划痕，中框磨损',rate:0.8},
+  {id:'D',name:'花机',desc:'明显磨损，多处磕碰',rate:0.7},
+  {id:'E',name:'外爆',desc:'屏幕碎裂但显示正常',rate:0.6},
+  {id:'F',name:'内爆可测',desc:'屏幕碎裂显示异常但能开机',rate:0.5}
+];
+
+function normalize(d){
+  if(!d||!d.brands) return d;
+  d.brands.forEach(b=>b.models.forEach(m=>{
+    if(m.s!==undefined){ m.name=m.m; m.storages=m.s.split('/'); m.prices=m.p.split('/').map(Number); delete m.m; delete m.s; delete m.p; }
+  }));
+  return d;
+}
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+const BASE = normalize(clone(DEFAULT_DATA));
+
+let DATA = (function(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw){ const d=JSON.parse(raw); if(d&&d.brands&&d.brands.length) return normalize(d); }
+  }catch(e){}
+  return clone(BASE);
+})();
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }
+
+let step = 1;
+let adminBrand = 0;
+let holdTimer = null;
+let toastTimer = null;
+const sel = {brand:null, model:null, storage:null, grade:null};
+
+const $ = id => document.getElementById(id);
+
+/* ---------- 通用 ---------- */
+function toast(msg){
+  const t=$('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function restartAnim(el){
+  el.classList.remove('anim');
+  void el.offsetWidth;
+  el.classList.add('anim');
+}
+function todayStr(){
+  const d=new Date();
+  return d.getFullYear()+'年'+String(d.getMonth()+1).padStart(2,'0')+'月'+String(d.getDate()).padStart(2,'0')+'日';
+}
+function curBrand(){ return DATA.brands.find(b=>b.id===sel.brand); }
+function curModel(){ const b=curBrand(); return b?b.models.find(m=>m.name===sel.model):null; }
+function calcPrice(model, si, rate){ return Math.round(model.prices[si]*rate); }
+function fmt(n){ return '¥'+n.toLocaleString('zh-CN'); }
+
+/* ---------- 步骤条 ---------- */
+function goStep(n){
+  step=n;
+  document.querySelectorAll('.step').forEach((s,i)=>{
+    const idx=i+1;
+    s.classList.toggle('done', idx<n || n===5);
+    s.classList.toggle('current', idx===n);
+  });
+  document.querySelectorAll('.step-line').forEach((l,i)=>l.classList.toggle('done', i<n-1));
+  const order=['sec-brand','sec-model','sec-storage','sec-grade','sec-result'];
+  order.forEach((id,i)=>{
+    const el=$(id);
+    const show = n===5 ? id==='sec-result' : (i+1)===n;
+    el.classList.toggle('hidden', !show);
+    if(show) restartAnim(el);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.step').forEach(s=>{
+  s.addEventListener('click',()=>{
+    const n=parseInt(s.dataset.step,10);
+    if(n>=1&&n<=4&&n<step) goStep(n);
+  });
+});
+
+/* ---------- 前台渲染 ---------- */
+function renderBrands(){
+  const g=$('brandGrid');
+  g.innerHTML='';
+  DATA.brands.forEach(b=>{
+    const el=document.createElement('button');
+    el.className='brand-card'+(b.id===sel.brand?' active':'');
+    el.innerHTML='<span class="brand-logo">'+b.logo+'</span><span class="brand-name">'+b.name+'</span><span class="brand-cnt">'+b.models.length+' 款机型</span>';
+    el.addEventListener('click',()=>{
+      sel.brand=b.id; sel.model=null; sel.storage=null; sel.grade=null;
+      renderBrands(); renderModels(); goStep(2);
+    });
+    g.appendChild(el);
+  });
+}
+function renderModels(){
+  const b=curBrand(), list=$('modelList');
+  if(!b) return;
+  list.innerHTML='';
+  b.models.forEach(m=>{
+    const minP=Math.min.apply(null,m.prices);
+    const el=document.createElement('button');
+    el.className='model-item'+(m.name===sel.model?' active':'');
+    el.innerHTML='<span class="model-name"></span><span class="model-price"></span>';
+    el.querySelector('.model-name').textContent=b.name.split(' ')[0]+' '+m.name;
+    el.querySelector('.model-price').textContent=fmt(minP)+' 起';
+    el.addEventListener('click',()=>{
+      sel.model=m.name; sel.storage=null; sel.grade=null;
+      renderModels(); renderStorages(); goStep(3);
+    });
+    list.appendChild(el);
+  });
+}
+function renderStorages(){
+  const m=curModel(), c=$('storageChips');
+  if(!m) return;
+  c.innerHTML='';
+  m.storages.forEach((s,i)=>{
+    const el=document.createElement('button');
+    el.className='chip'+(i===sel.storage?' active':'');
+    el.textContent=s;
+    el.addEventListener('click',()=>{
+      sel.storage=i; sel.grade=null;
+      renderStorages(); renderGrades(); goStep(4);
+    });
+    c.appendChild(el);
+  });
+}
+function renderGrades(){
+  const m=curModel(), c=$('gradeList');
+  if(!m) return;
+  c.innerHTML='';
+  GRADES.forEach((g,i)=>{
+    const price=calcPrice(m, sel.storage, g.rate);
+    const el=document.createElement('button');
+    el.className='grade-item'+(i===sel.grade?' active':'');
+    el.innerHTML='<span class="grade-badge">'+g.id+'</span>'
+      +'<span class="grade-info"><span class="grade-name">'+g.name+'</span><span class="grade-desc">'+g.desc+'</span></span>'
+      +'<span class="grade-side"><span class="grade-rate">'+Math.round(g.rate*100)+'%</span><span class="grade-price">'+fmt(price)+'</span></span>';
+    el.addEventListener('click',()=>{
+      sel.grade=i; renderGrades(); showResult();
+    });
+    c.appendChild(el);
+  });
+}
+function showResult(){
+  const b=curBrand(), m=curModel(), g=GRADES[sel.grade];
+  if(!b||!m||sel.storage===null||!g) return;
+  const price=calcPrice(m, sel.storage, g.rate);
+  const priceEl=$('resultPrice');
+  priceEl.textContent=fmt(price);
+  priceEl.classList.remove('price-pop');
+  void priceEl.offsetWidth;
+  priceEl.classList.add('price-pop');
+  $('resultDesc').textContent=b.name+' · '+m.name+' · '+m.storages[sel.storage]+' · '+g.name+' ('+Math.round(g.rate*100)+'%)';
+  goStep(5);
+}
+$('btnRestart').addEventListener('click',()=>{
+  sel.brand=null; sel.model=null; sel.storage=null; sel.grade=null;
+  renderBrands(); goStep(1);
+});
+$('btnBackGrade').addEventListener('click',()=>{ if(sel.grade!==null){ renderGrades(); goStep(4); } });
+
+/* ---------- 长按齿轮进后台 ---------- */
+const RING_C = 2*Math.PI*25.5;
+const gearWrap=$('gearWrap'), gearBtn=$('gearBtn'), gearRing=$('gearRing');
+function ringReset(){
+  gearRing.style.transition='none';
+  gearRing.style.strokeDasharray=RING_C.toFixed(1);
+  gearRing.style.strokeDashoffset=RING_C.toFixed(1);
+}
+ringReset();
+function startHold(e){
+  e.preventDefault();
+  gearWrap.classList.add('holding');
+  gearRing.style.transition='none';
+  gearRing.style.strokeDashoffset=RING_C.toFixed(1);
+  void gearRing.getBoundingClientRect();
+  gearRing.style.transition='stroke-dashoffset '+HOLD_MS+'ms linear';
+  gearRing.style.strokeDashoffset='0';
+  holdTimer=setTimeout(openPw, HOLD_MS);
+}
+function cancelHold(){
+  clearTimeout(holdTimer);
+  gearWrap.classList.remove('holding');
+  ringReset();
+}
+gearBtn.addEventListener('pointerdown',startHold);
+['pointerup','pointercancel','pointerleave'].forEach(ev=>gearBtn.addEventListener(ev,cancelHold));
+
+/* ---------- 密码 ---------- */
+function openPw(){
+  $('pwErr').classList.add('hidden');
+  $('pwInput').value='';
+  $('pwMask').classList.remove('hidden');
+  setTimeout(()=>$('pwInput').focus(),120);
+}
+function closePw(){ $('pwMask').classList.add('hidden'); }
+function tryPwd(){
+  if($('pwInput').value===ADMIN_PWD){ closePw(); openAdmin(); }
+  else{ $('pwErr').classList.remove('hidden'); $('pwInput').value=''; $('pwInput').focus(); }
+}
+$('pwOk').addEventListener('click',tryPwd);
+$('pwCancel').addEventListener('click',closePw);
+$('pwInput').addEventListener('keydown',e=>{ if(e.key==='Enter') tryPwd(); });
+
+/* ---------- 后台 ---------- */
+function openAdmin(){
+  adminBrand=0;
+  $('adminMask').classList.remove('hidden');
+  renderAdminBrands(); renderAdminModels(); fillShopForm(); updateAddTip();
+}
+$('adminClose').addEventListener('click',()=>{
+  $('adminMask').classList.add('hidden');
+  refreshAll();
+});
+document.querySelectorAll('.atab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.atab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    ['tab-models','tab-shop','tab-data'].forEach(id=>$(id).classList.toggle('hidden', id!=='tab-'+t.dataset.tab));
+  });
+});
+function renderAdminBrands(){
+  const box=$('abrands');
+  box.innerHTML='';
+  DATA.brands.forEach((b,i)=>{
+    const el=document.createElement('button');
+    el.className='abrand'+(i===adminBrand?' active':'');
+    el.innerHTML='<span class="ab-logo">'+b.logo+'</span><span>'+b.name+'</span><span class="ab-cnt">'+b.models.length+'</span>';
+    el.addEventListener('click',()=>{ adminBrand=i; renderAdminBrands(); renderAdminModels(); updateAddTip(); });
+    box.appendChild(el);
+  });
+}
+function renderAdminModels(){
+  const box=$('amodels');
+  const b=DATA.brands[adminBrand];
+  if(!b){ box.innerHTML=''; return; }
+  let html='';
+  b.models.forEach((m,mi)=>{
+    let cells='';
+    m.storages.forEach((s,si)=>{
+      cells+='<label class="pcell"><span>'+s+'</span><input class="price-inp" data-mi="'+mi+'" data-si="'+si+'" inputmode="numeric" value="'+m.prices[si]+'"></label>';
+    });
+    html+='<div class="amodel"><div class="amodel-top"><span class="amodel-name">'+m.name+'</span><button class="adel" data-mi="'+mi+'">删除</button></div><div class="amodel-prices">'+cells+'</div></div>';
+  });
+  box.innerHTML=html||'<p style="color:#9aa0b5;font-size:13px;text-align:center;padding:20px">该品牌暂无机型</p>';
+}
+$('amodels').addEventListener('change',e=>{
+  if(!e.target.classList.contains('price-inp')) return;
+  const mi=parseInt(e.target.dataset.mi,10), si=parseInt(e.target.dataset.si,10);
+  const model=DATA.brands[adminBrand]&&DATA.brands[adminBrand].models[mi];
+  if(!model) return;
+  const v=parseInt(e.target.value,10);
+  if(isNaN(v)||v<0){ toast('请输入有效价格'); e.target.value=model.prices[si]; return; }
+  model.prices[si]=v; save(); toast('价格已保存');
+});
+$('amodels').addEventListener('click',e=>{
+  if(!e.target.classList.contains('adel')) return;
+  const mi=parseInt(e.target.dataset.mi,10);
+  const model=DATA.brands[adminBrand]&&DATA.brands[adminBrand].models[mi];
+  if(!model) return;
+  if(confirm('确定删除「'+model.name+'」吗？')){
+    DATA.brands[adminBrand].models.splice(mi,1);
+    save(); renderAdminModels(); renderAdminBrands(); renderBrands(); updateAddTip(); toast('已删除');
+  }
+});
+function updateAddTip(){ $('addTip').textContent='添加到当前品牌：'+(DATA.brands[adminBrand]?DATA.brands[adminBrand].name:''); }
+$('addBtn').addEventListener('click',()=>{
+  const name=$('addName').value.trim();
+  const storages=$('addStorage').value.split(/[,，\/]/).map(t=>t.trim()).filter(Boolean);
+  const prices=$('addPrice').value.split(/[,，\/]/).map(t=>parseInt(t.trim(),10)).filter(n=>!isNaN(n));
+  if(!name) return toast('请填写型号名称');
+  if(!storages.length) return toast('请填写存储容量');
+  if(storages.length!==prices.length) return toast('存储与价格数量不一致');
+  if(prices.some(p=>p<0)) return toast('价格不能为负数');
+  DATA.brands[adminBrand].models.push({name:name, storages:storages, prices:prices});
+  save(); renderAdminModels(); renderAdminBrands(); renderBrands();
+  $('addName').value=''; $('addStorage').value=''; $('addPrice').value='';
+  toast('已添加「'+name+'」');
+});
+
+/* ---------- 店铺设置 ---------- */
+function fillShopForm(){
+  $('setName').value=DATA.shop.name;
+  $('setWechat').value=DATA.shop.wechat;
+  $('setPhone').value=DATA.shop.phone;
+}
+$('saveShop').addEventListener('click',()=>{
+  DATA.shop.name=$('setName').value.trim()||'XX手机回收';
+  DATA.shop.wechat=$('setWechat').value.trim()||'待更新';
+  DATA.shop.phone=$('setPhone').value.trim()||'待更新';
+  save(); updateFront(); toast('店铺设置已保存');
+});
+
+/* ---------- 数据管理 ---------- */
+$('btnExport').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='手机回收报价数据.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },300);
+  toast('已导出');
+});
+$('btnImport').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const obj=JSON.parse(r.result);
+      if(!obj||!obj.brands||!Array.isArray(obj.brands)) throw new Error('bad');
+      DATA.brands=normalize(clone(obj)).brands;
+      if(obj.shop&&obj.shop.name) DATA.shop=obj.shop;
+      save(); refreshAll(); renderAdminBrands(); renderAdminModels(); fillShopForm(); updateAddTip();
+      toast('导入成功');
+    }catch(err){ toast('文件格式不正确'); }
+  };
+  r.readAsText(f);
+  e.target.value='';
+});
+$('btnReset').addEventListener('click',()=>{
+  if(!confirm('确定恢复为默认报价数据吗？当前所有修改将丢失。')) return;
+  DATA=clone(BASE);
+  save(); refreshAll(); renderAdminBrands(); renderAdminModels(); fillShopForm(); updateAddTip();
+  toast('已重置为默认数据');
+});
+
+/* ---------- 刷新前台 ---------- */
+function updateFront(){
+  $('shopName').textContent=DATA.shop.name;
+  $('footWechat').textContent=DATA.shop.wechat;
+  $('footPhone').textContent=DATA.shop.phone;
+}
+function refreshAll(){
+  updateFront(); renderBrands();
+  if(step>=2) renderModels();
+  if(step>=3) renderStorages();
+  if(step>=4) renderGrades();
+  if(step===5&&sel.grade!==null) showResult();
+}
+
+/* ---------- 初始化 ---------- */
+$('today').textContent=todayStr()+' 更新';
+updateFront();
+renderBrands();
+goStep(1);
+lucide.createIcons();
+</script>
+
+<script>(function(){
+var d=document,b=d.body;if(!b)return;
+var old=b.querySelectorAll('[data-aigc-mark],#__xas_aigc_watermark__');
+for(var k=0;k<old.length;k++)old[k].parentNode&&old[k].parentNode.removeChild(old[k]);
+var f=d.createElement("div");
+f.id="__xas_aigc_watermark__";
+f.setAttribute("data-aigc-mark","true");
+f.style.cssText="position:fixed;bottom:8px;right:12px;z-index:2147483647;font-size:11px;padding:3px 7px;font-family:system-ui,sans-serif;pointer-events:none;color:rgba(30,30,30,0.6);background:rgba(255,255,255,0.4);border:0.5px solid rgba(0,0,0,0.08);border-radius:4px;line-height:1.4;backdrop-filter:blur(8px);";
+var paths=["M14.0072 26.6377C14.2318 25.9475 13.3696 25.4389 12.8659 25.9611C9.56694 29.3941 6.9736 33.4696 5.35587 37.9788C-0.86998 55.1279 7.72006 74.1728 24.7867 80.6891C33.1499 83.8815 41.0252 82.7894 44.7212 81.8812C54.0056 79.6016 63.1537 72.4609 66.7114 63.4447C67.1039 62.4525 66.6252 61.3286 65.6404 60.9222C63.78 60.1548 61.9263 59.3896 60.3721 58.7471C59.46 58.3702 58.4117 58.7402 57.9398 59.6076C56.4287 62.3753 54.8496 65.0568 52.4945 67.2274C46.0349 73.5893 36.1675 75.8621 27.5956 72.9036C14.6833 68.6487 7.76998 54.5307 12.124 41.7683C12.3668 41.0553 12.4916 40.3038 12.4621 39.55C12.242 33.8125 12.8228 30.2955 14.0072 26.6377Z","M73.6785 14.313C74.3682 14.5378 74.8765 13.675 74.3546 13.171C70.9241 9.86968 66.8514 7.27451 62.3454 5.65564C45.2084 -0.574603 26.1769 8.0215 19.6651 25.1002C16.4751 33.4692 17.5664 41.3501 18.474 45.0488C20.7519 54.3396 27.8876 63.4943 36.8974 67.0544C37.8889 67.4472 39.012 66.9681 39.4182 65.9827C40.185 64.1209 40.9497 62.2659 41.5918 60.7107C41.9684 59.7979 41.5986 58.7489 40.7318 58.2767C37.9661 56.7645 35.2865 55.1843 33.1174 52.8275C26.76 46.3634 24.4888 36.489 27.4452 27.9111C31.6971 14.9897 45.8051 8.07145 58.5586 12.4285C59.271 12.6715 60.022 12.7964 60.7753 12.7668C66.5088 12.5466 70.0233 13.1278 73.6785 14.313Z","M85.9922 73.9549C85.7676 74.6451 86.6298 75.1537 87.1335 74.6315C90.4324 71.1985 93.0258 67.123 94.6435 62.6138C100.869 45.4647 92.2793 26.4198 75.2127 19.9035C66.8495 16.7111 58.9742 17.8033 55.2782 18.7114C45.9938 20.991 36.8456 28.1317 33.288 37.1479C32.8955 38.1401 33.3742 39.264 34.3589 39.6704C36.2194 40.4378 38.0731 41.203 39.6273 41.8455C40.5394 42.2224 41.5876 41.8524 42.0596 40.985C43.5706 38.2173 45.1498 35.5358 47.5049 33.3652C53.9645 27.0033 63.8319 24.7305 72.4038 27.689C85.3161 31.9439 92.2294 46.0619 87.8754 58.8243C87.6326 59.5373 87.5078 60.2888 87.5373 61.0426C87.7574 66.7801 87.1766 70.2971 85.9922 73.9549Z","M26.2674 86.2849C25.5777 86.0601 25.0694 86.9229 25.5913 87.4269C29.0219 90.7282 33.0945 93.3234 37.6028 94.9423C54.7398 101.173 73.7713 92.5764 80.2831 75.4977C83.4731 67.1287 82.3818 59.2478 81.4742 55.5491C79.1963 46.2583 72.0606 37.1036 63.0508 33.5435C62.0593 33.1507 60.9362 33.6298 60.53 34.6152C59.7632 36.477 58.9985 38.3297 58.3564 39.885C57.9798 40.7977 58.3496 41.8467 59.2163 42.3212C61.9821 43.8334 64.6617 45.4114 66.8285 47.7704C73.1859 54.2345 75.4571 64.1089 72.5007 72.6869C68.2488 85.6082 54.1408 92.5265 41.3874 88.1694C40.6749 87.9264 39.9239 87.8015 39.1706 87.8311C33.4371 88.0513 29.9226 87.4701 26.2674 86.2826V86.2849Z"];
+b.appendChild(f);
+var svg='<svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline;vertical-align:-2px;margin:0 4px">';
+for(var i=0;i<paths.length;i++)svg+='<path d="'+paths[i]+'" fill="rgba(30,30,30,0.5)"/>';
+svg+="</svg>";
+f.innerHTML="本页面由"+svg+"超级小爱AI生成";
+})();</script>
+</body>
+</html>
